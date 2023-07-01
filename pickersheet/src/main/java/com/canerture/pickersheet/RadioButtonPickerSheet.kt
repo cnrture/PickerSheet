@@ -12,6 +12,8 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonColors
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,6 +42,7 @@ fun RadioButtonPickerSheet(
     titleConfiguration: TitleConfiguration = TitleConfiguration(),
     itemConfiguration: ItemConfiguration = ItemConfiguration(),
     sheetColors: PickerSheetColors = PickerSheetColors(),
+    colors: RadioButtonColors = RadioButtonDefaults.colors(),
     onItemClick: ((String) -> Unit)? = null,
     onDismiss: ((String) -> Unit)? = null
 ) {
@@ -85,7 +88,8 @@ fun RadioButtonPickerSheet(
                                 onClick = {
                                     selectedItem = item
                                     onItemClick?.invoke(item)
-                                }
+                                },
+                                colors = colors
                             )
                             Text(
                                 modifier = Modifier

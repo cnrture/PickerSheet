@@ -8,10 +8,13 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -44,7 +47,119 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    val sheetState = rememberModalBottomSheetState()
 
+                    var textPickerShowState by rememberSaveable { mutableStateOf(false) }
+                    var checkBoxPickerShowState by rememberSaveable { mutableStateOf(false) }
+                    var radioButtonPickerShowState by rememberSaveable { mutableStateOf(false) }
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Button(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 24.dp),
+                            onClick = { textPickerShowState = true }
+                        ) {
+                            Text(text = "Show Text Picker Sheet")
+                        }
+                        Button(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 24.dp),
+                            onClick = { checkBoxPickerShowState = true }
+                        ) {
+                            Text(text = "Show CheckBox Picker Sheet")
+                        }
+                        Button(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 24.dp),
+                            onClick = { radioButtonPickerShowState = true }
+                        ) {
+                            Text(text = "Show RadioButton Picker Sheet")
+                        }
+                    }
+
+                    TextPickerSheet(
+                        modifier = Modifier.padding(16.dp),
+                        sheetState = sheetState,
+                        showState = textPickerShowState,
+                        list = listOf(
+                            "First",
+                            "Second",
+                            "Third",
+                            "Fourth"
+                        ),
+                        title = "Title",
+                        selectedItem = "Second",
+                        isDragIconEnabled = true,
+                        fontFamily = FontFamily.Default,
+                        dividerConfiguration = DividerConfiguration(),
+                        titleConfiguration = TitleConfiguration(),
+                        itemConfiguration = ItemConfiguration(),
+                        sheetColors = PickerSheetColors(),
+                        selectedIconConfiguration = SelectedIconConfiguration(),
+                        onItemClick = {
+                            //textPickerShowState = false
+                        },
+                        onDismiss = {
+                            textPickerShowState = false
+                        }
+                    )
+
+                    CheckBoxPickerSheet(
+                        modifier = Modifier.padding(16.dp),
+                        sheetState = sheetState,
+                        showState = checkBoxPickerShowState,
+                        list = listOf(
+                            "First",
+                            "Second",
+                            "Third",
+                            "Fourth"
+                        ),
+                        title = "Title",
+                        selectedItems = listOf("Second", "Third"),
+                        isDragIconEnabled = true,
+                        fontFamily = FontFamily.Default,
+                        dividerConfiguration = DividerConfiguration(),
+                        titleConfiguration = TitleConfiguration(),
+                        itemConfiguration = ItemConfiguration(),
+                        sheetColors = PickerSheetColors(),
+                        colors = CheckboxDefaults.colors(),
+                        onDismiss = {
+                            checkBoxPickerShowState = false
+                        }
+                    )
+
+                    RadioButtonPickerSheet(
+                        modifier = Modifier.padding(16.dp),
+                        sheetState = sheetState,
+                        showState = radioButtonPickerShowState,
+                        list = listOf(
+                            "First",
+                            "Second",
+                            "Third",
+                            "Fourth"
+                        ),
+                        title = "Title",
+                        selectedItem = "Second",
+                        isDragIconEnabled = true,
+                        fontFamily = FontFamily.Default,
+                        dividerConfiguration = DividerConfiguration(),
+                        titleConfiguration = TitleConfiguration(),
+                        itemConfiguration = ItemConfiguration(),
+                        sheetColors = PickerSheetColors(),
+                        colors = RadioButtonDefaults.colors(),
+                        onItemClick = {
+                            //radioButtonPickerShowState = false
+                        },
+                        onDismiss = {
+                            radioButtonPickerShowState = false
+                        }
+                    )
                 }
             }
         }
@@ -62,21 +177,36 @@ fun Preview() {
     ) {
         val sheetState = rememberModalBottomSheetState()
 
-        var isOpenTextPicker by rememberSaveable { mutableStateOf(false) }
-        var isOpenCheckBoxPicker by rememberSaveable { mutableStateOf(false) }
-        var isOpenRadioButtonPicker by rememberSaveable { mutableStateOf(false) }
+        var textPickerShowState by rememberSaveable { mutableStateOf(false) }
+        var checkBoxPickerShowState by rememberSaveable { mutableStateOf(false) }
+        var radioButtonPickerShowState by rememberSaveable { mutableStateOf(false) }
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Button(onClick = { isOpenTextPicker = true }) {
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
+                onClick = { textPickerShowState = true }
+            ) {
                 Text(text = "Show Text Picker Sheet")
             }
-            Button(onClick = { isOpenCheckBoxPicker = true }) {
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
+                onClick = { checkBoxPickerShowState = true }
+            ) {
                 Text(text = "Show CheckBox Picker Sheet")
             }
-            Button(onClick = { isOpenRadioButtonPicker = true }) {
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
+                onClick = { radioButtonPickerShowState = true }
+            ) {
                 Text(text = "Show RadioButton Picker Sheet")
             }
         }
@@ -84,7 +214,7 @@ fun Preview() {
         TextPickerSheet(
             modifier = Modifier.padding(16.dp),
             sheetState = sheetState,
-            showState = isOpenTextPicker,
+            showState = textPickerShowState,
             list = listOf(
                 "First",
                 "Second",
@@ -101,17 +231,17 @@ fun Preview() {
             sheetColors = PickerSheetColors(),
             selectedIconConfiguration = SelectedIconConfiguration(),
             onItemClick = {
-                //isOpenTextPicker = false
+                //textPickerShowState = false
             },
             onDismiss = {
-                isOpenTextPicker = false
+                textPickerShowState = false
             }
         )
 
         CheckBoxPickerSheet(
             modifier = Modifier.padding(16.dp),
             sheetState = sheetState,
-            showState = isOpenTextPicker,
+            showState = checkBoxPickerShowState,
             list = listOf(
                 "First",
                 "Second",
@@ -126,15 +256,16 @@ fun Preview() {
             titleConfiguration = TitleConfiguration(),
             itemConfiguration = ItemConfiguration(),
             sheetColors = PickerSheetColors(),
+            colors = CheckboxDefaults.colors(),
             onDismiss = {
-                isOpenTextPicker = false
+                checkBoxPickerShowState = false
             }
         )
 
         RadioButtonPickerSheet(
             modifier = Modifier.padding(16.dp),
             sheetState = sheetState,
-            showState = isOpenTextPicker,
+            showState = radioButtonPickerShowState,
             list = listOf(
                 "First",
                 "Second",
@@ -149,11 +280,12 @@ fun Preview() {
             titleConfiguration = TitleConfiguration(),
             itemConfiguration = ItemConfiguration(),
             sheetColors = PickerSheetColors(),
+            colors = RadioButtonDefaults.colors(),
             onItemClick = {
-                //isOpenTextPicker = false
+                //radioButtonPickerShowState = false
             },
             onDismiss = {
-                isOpenTextPicker = false
+                radioButtonPickerShowState = false
             }
         )
     }

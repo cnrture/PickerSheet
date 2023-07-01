@@ -9,6 +9,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxColors
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
@@ -38,6 +40,7 @@ fun CheckBoxPickerSheet(
     titleConfiguration: TitleConfiguration = TitleConfiguration(),
     itemConfiguration: ItemConfiguration = ItemConfiguration(),
     sheetColors: PickerSheetColors = PickerSheetColors(),
+    colors: CheckboxColors = CheckboxDefaults.colors(),
     onDismiss: ((List<String>) -> Unit)? = null
 ) {
 
@@ -83,7 +86,8 @@ fun CheckBoxPickerSheet(
                                 onCheckedChange = {
                                     if (it) selectedItemsTemp.add(item)
                                     else selectedItemsTemp.remove(item)
-                                }
+                                },
+                                colors = colors
                             )
                             Text(
                                 modifier = Modifier
