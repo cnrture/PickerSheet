@@ -22,11 +22,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,24 +32,24 @@ import androidx.compose.ui.unit.dp
 fun TextPickerSheet(
     modifier: Modifier = Modifier,
     sheetState: SheetState,
-    isOpen: Boolean = false,
+    showState: Boolean = false,
     list: List<String>,
     title: String? = null,
     selectedItem: String? = null,
     isDragIconEnabled: Boolean = true,
-    dividerEnabled: Boolean = false,
     fontFamily: FontFamily = FontFamily.Default,
-    titleConfigure: TitleConfigure = TitleConfigure(),
-    itemConfigure: ItemConfigure = ItemConfigure(),
+    dividerConfiguration: DividerConfiguration = DividerConfiguration(),
+    titleConfiguration: TitleConfiguration = TitleConfiguration(),
+    itemConfiguration: ItemConfiguration = ItemConfiguration(),
     sheetColors: PickerSheetColors = PickerSheetColors(),
-    selectedIconConfigure: SelectedIconConfigure = SelectedIconConfigure(),
+    selectedIconConfiguration: SelectedIconConfiguration = SelectedIconConfiguration(),
     onItemClick: ((String) -> Unit)? = null,
-    onDismiss: (() -> Unit)? = null
+    onDismiss: ((String) -> Unit)? = null
 ) {
 
-    var selectedItem by remember { mutableStateOf(selectedItem) }
+    var selectedItem by remember { mutableStateOf(selectedItem.orEmpty()) }
 
-    if (isOpen) {
+    if (showState) {
         ModalBottomSheet(
             sheetState = sheetState,
             scrimColor = sheetColors.scrimColor,
@@ -59,7 +57,7 @@ fun TextPickerSheet(
             dragHandle = {
                 if (isDragIconEnabled) BottomSheetDefaults.DragHandle()
             },
-            onDismissRequest = { onDismiss?.invoke() }
+            onDismissRequest = { onDismiss?.invoke(selectedItem) }
         ) {
             Column(
                 modifier = modifier
@@ -68,13 +66,15 @@ fun TextPickerSheet(
             ) {
                 title?.let {
                     Text(
-                        modifier = Modifier.fillMaxWidth().padding(top = if (isDragIconEnabled) 0.dp else 12.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = if (isDragIconEnabled) 0.dp else 12.dp),
                         text = title,
                         fontWeight = FontWeight.Bold,
-                        fontSize = titleConfigure.size,
+                        fontSize = titleConfiguration.size,
                         fontFamily = fontFamily,
-                        color = titleConfigure.color,
-                        textAlign = titleConfigure.align
+                        color = titleConfiguration.color,
+                        textAlign = titleConfiguration.align
                     )
                 }
                 LazyColumn {
@@ -86,27 +86,29 @@ fun TextPickerSheet(
                                     selectedItem = item
                                     onItemClick?.invoke(item)
                                 }
-                                .padding(top = if (title != null && index == 0) itemConfigure.padding else 0.dp),
+                                .padding(top = if (title != null && index == 0) itemConfiguration.padding else 0.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
                                 modifier = Modifier
-                                    .padding(vertical = itemConfigure.padding)
+                                    .padding(vertical = itemConfiguration.padding)
                                     .weight(1f),
                                 text = item,
-                                fontSize = itemConfigure.size,
+                                fontSize = itemConfiguration.size,
                                 fontFamily = fontFamily,
-                                color = itemConfigure.color
+                                color = itemConfiguration.color
                             )
                             if (item == selectedItem) Icon(
-                                modifier = Modifier.padding(end = 8.dp).size(selectedIconConfigure.size),
-                                painter = painterResource(id = selectedIconConfigure.icon),
-                                tint = selectedIconConfigure.color,
+                                modifier = Modifier
+                                    .padding(end = 8.dp)
+                                    .size(selectedIconConfiguration.size),
+                                painter = painterResource(id = selectedIconConfiguration.icon),
+                                tint = selectedIconConfiguration.color,
                                 contentDescription = null
                             )
                         }
-                        if (dividerEnabled && index != list.size - 1) {
-                            Divider(color = colorResource(id = R.color.black))
+                        if (dividerConfiguration.isEnabled && index != list.size - 1) {
+                            Divider(color = dividerConfiguration.color)
                         }
                     }
                 }

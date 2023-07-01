@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,41 +19,40 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CheckBoxPickerSheet(
     modifier: Modifier = Modifier,
     sheetState: SheetState,
-    isOpen: Boolean = false,
+    showState: Boolean = false,
     list: List<String>,
     title: String? = null,
     selectedItems: List<String>? = null,
-    dividerEnabled: Boolean = false,
+    isDragIconEnabled: Boolean = true,
     fontFamily: FontFamily = FontFamily.Default,
-    titleFontColor: Color = Color.Black,
-    titleFontSize: TextUnit = 16.sp,
-    itemFontColor: Color = Color.Black,
-    itemFontSize: TextUnit = 14.sp,
-    itemPadding: Dp = 16.dp,
-    onDismiss: (() -> Unit)? = null
+    dividerConfiguration: DividerConfiguration = DividerConfiguration(),
+    titleConfiguration: TitleConfiguration = TitleConfiguration(),
+    itemConfiguration: ItemConfiguration = ItemConfiguration(),
+    sheetColors: PickerSheetColors = PickerSheetColors(),
+    onDismiss: ((List<String>) -> Unit)? = null
 ) {
 
     var selectedItemsTemp = remember { mutableStateListOf("") }
     selectedItems?.let { selectedItemsTemp.addAll(it) }
 
-    if (isOpen) {
+    if (showState) {
         ModalBottomSheet(
             sheetState = sheetState,
-            onDismissRequest = { onDismiss?.invoke() }
+            scrimColor = sheetColors.scrimColor,
+            containerColor = sheetColors.backgroundColor,
+            dragHandle = {
+                if (isDragIconEnabled) BottomSheetDefaults.DragHandle()
+            },
+            onDismissRequest = { onDismiss?.invoke(selectedItemsTemp) }
         ) {
             Column(
                 modifier = modifier
@@ -64,9 +64,10 @@ fun CheckBoxPickerSheet(
                         modifier = Modifier,
                         text = title,
                         fontWeight = FontWeight.Bold,
-                        fontSize = titleFontSize,
+                        fontSize = titleConfiguration.size,
                         fontFamily = fontFamily,
-                        color = titleFontColor
+                        color = titleConfiguration.color,
+                        textAlign = titleConfiguration.align
                     )
                 }
                 LazyColumn {
@@ -74,7 +75,7 @@ fun CheckBoxPickerSheet(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = if (title != null && index == 0) itemPadding else 0.dp),
+                                .padding(top = if (title != null && index == 0) itemConfiguration.padding else 0.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Checkbox(
@@ -86,16 +87,16 @@ fun CheckBoxPickerSheet(
                             )
                             Text(
                                 modifier = Modifier
-                                    .padding(vertical = itemPadding)
+                                    .padding(vertical = itemConfiguration.padding)
                                     .weight(1f),
                                 text = item,
-                                fontSize = itemFontSize,
+                                fontSize = itemConfiguration.size,
                                 fontFamily = fontFamily,
-                                color = itemFontColor
+                                color = itemConfiguration.color
                             )
                         }
-                        if (dividerEnabled && index != list.size - 1) {
-                            Divider(color = colorResource(id = R.color.black))
+                        if (dividerConfiguration.isEnabled && index != list.size - 1) {
+                            Divider(color = dividerConfiguration.color)
                         }
                     }
                 }

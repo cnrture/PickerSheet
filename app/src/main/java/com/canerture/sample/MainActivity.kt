@@ -22,11 +22,17 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.canerture.pickersheet.CheckBoxPickerSheet
+import com.canerture.pickersheet.DividerConfiguration
+import com.canerture.pickersheet.ItemConfiguration
+import com.canerture.pickersheet.PickerSheetColors
 import com.canerture.pickersheet.RadioButtonPickerSheet
+import com.canerture.pickersheet.SelectedIconConfiguration
 import com.canerture.pickersheet.TextPickerSheet
+import com.canerture.pickersheet.TitleConfiguration
 import com.canerture.sample.ui.theme.SampleTheme
 
 class MainActivity : ComponentActivity() {
@@ -38,47 +44,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val sheetState = rememberModalBottomSheetState()
 
-                    var isOpenTextPicker by rememberSaveable { mutableStateOf(false) }
-                    var isOpenCheckBoxPicker by rememberSaveable { mutableStateOf(false) }
-                    var isOpenRadioButtonPicker by rememberSaveable { mutableStateOf(false) }
-
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Button(onClick = { isOpenTextPicker = true }) {
-                            Text(text = "Show Text Picker Sheet")
-                        }
-                        Button(onClick = { isOpenCheckBoxPicker = true }) {
-                            Text(text = "Show CheckBox Picker Sheet")
-                        }
-                        Button(onClick = { isOpenRadioButtonPicker = true }) {
-                            Text(text = "Show RadioButton Picker Sheet")
-                        }
-                    }
-
-                    TextPickerSheet(
-                        sheetState = sheetState,
-                        isOpen = isOpenTextPicker,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
-                        title = "Sırala",
-                        list = listOf(
-                            "First",
-                            "Second",
-                            "Third",
-                            "Fourth"
-                        ),
-                        dividerEnabled = true,
-                        selectedItem = "Second",
-                        onItemClick = {
-                            //isOpenTextPicker = false
-                        },
-                        onDismiss = {
-                            isOpenTextPicker = false
-                        }
-                    )
                 }
             }
         }
@@ -116,9 +82,9 @@ fun Preview() {
         }
 
         TextPickerSheet(
-            sheetState = sheetState,
-            isOpen = isOpenTextPicker,
             modifier = Modifier.padding(16.dp),
+            sheetState = sheetState,
+            showState = isOpenTextPicker,
             list = listOf(
                 "First",
                 "Second",
@@ -126,8 +92,14 @@ fun Preview() {
                 "Fourth"
             ),
             title = "Title",
-            dividerEnabled = true,
             selectedItem = "Second",
+            isDragIconEnabled = true,
+            fontFamily = FontFamily.Default,
+            dividerConfiguration = DividerConfiguration(),
+            titleConfiguration = TitleConfiguration(),
+            itemConfiguration = ItemConfiguration(),
+            sheetColors = PickerSheetColors(),
+            selectedIconConfiguration = SelectedIconConfiguration(),
             onItemClick = {
                 //isOpenTextPicker = false
             },
@@ -137,38 +109,51 @@ fun Preview() {
         )
 
         CheckBoxPickerSheet(
-            sheetState = sheetState,
-            isOpen = isOpenCheckBoxPicker,
             modifier = Modifier.padding(16.dp),
+            sheetState = sheetState,
+            showState = isOpenTextPicker,
             list = listOf(
                 "First",
                 "Second",
                 "Third",
                 "Fourth"
             ),
-            selectedItems = listOf("First", "Second"),
             title = "Title",
-            dividerEnabled = true,
+            selectedItems = listOf("Second", "Third"),
+            isDragIconEnabled = true,
+            fontFamily = FontFamily.Default,
+            dividerConfiguration = DividerConfiguration(),
+            titleConfiguration = TitleConfiguration(),
+            itemConfiguration = ItemConfiguration(),
+            sheetColors = PickerSheetColors(),
             onDismiss = {
-                isOpenCheckBoxPicker = false
+                isOpenTextPicker = false
             }
         )
 
         RadioButtonPickerSheet(
-            sheetState = sheetState,
-            isOpen = isOpenRadioButtonPicker,
             modifier = Modifier.padding(16.dp),
+            sheetState = sheetState,
+            showState = isOpenTextPicker,
             list = listOf(
                 "First",
                 "Second",
                 "Third",
                 "Fourth"
             ),
-            selectedItem = "Second",
             title = "Title",
-            dividerEnabled = true,
+            selectedItem = "Second",
+            isDragIconEnabled = true,
+            fontFamily = FontFamily.Default,
+            dividerConfiguration = DividerConfiguration(),
+            titleConfiguration = TitleConfiguration(),
+            itemConfiguration = ItemConfiguration(),
+            sheetColors = PickerSheetColors(),
+            onItemClick = {
+                //isOpenTextPicker = false
+            },
             onDismiss = {
-                isOpenRadioButtonPicker = false
+                isOpenTextPicker = false
             }
         )
     }
