@@ -1,5 +1,6 @@
 package com.canerture.pickersheet
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -43,11 +44,10 @@ fun TextPickerSheet(
     itemConfiguration: ItemConfiguration = ItemConfiguration(),
     sheetColors: PickerSheetColors = PickerSheetColors(),
     selectedIconConfiguration: SelectedIconConfiguration = SelectedIconConfiguration(),
-    onItemClick: ((String) -> Unit)? = null,
     onDismiss: ((String) -> Unit)? = null
 ) {
 
-    var selectedItem by remember { mutableStateOf(selectedItem.orEmpty()) }
+    var selectedItemTemp by remember { mutableStateOf(selectedItem.orEmpty()) }
 
     if (showState) {
         ModalBottomSheet(
@@ -57,7 +57,7 @@ fun TextPickerSheet(
             dragHandle = {
                 if (isDragIconEnabled) BottomSheetDefaults.DragHandle()
             },
-            onDismissRequest = { onDismiss?.invoke(selectedItem) }
+            onDismissRequest = { onDismiss?.invoke(selectedItemTemp) }
         ) {
             Column(
                 modifier = modifier
@@ -82,11 +82,10 @@ fun TextPickerSheet(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickableWithoutRipple {
-                                    selectedItem = item
-                                    onItemClick?.invoke(item)
-                                }
-                                .padding(top = if (title != null && index == 0) itemConfiguration.padding else 0.dp),
+                                .padding(top = if (title != null && index == 0) itemConfiguration.padding else 0.dp)
+                                .clickable {
+                                    selectedItemTemp = item
+                                },
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
@@ -98,7 +97,7 @@ fun TextPickerSheet(
                                 fontFamily = fontFamily,
                                 color = itemConfiguration.color
                             )
-                            if (item == selectedItem) Icon(
+                            if (selectedItemTemp == item) Icon(
                                 modifier = Modifier
                                     .padding(end = 8.dp)
                                     .size(selectedIconConfiguration.size),

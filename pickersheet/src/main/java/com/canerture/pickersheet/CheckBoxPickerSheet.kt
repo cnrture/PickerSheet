@@ -1,5 +1,6 @@
 package com.canerture.pickersheet
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -40,12 +41,15 @@ fun CheckBoxPickerSheet(
     titleConfiguration: TitleConfiguration = TitleConfiguration(),
     itemConfiguration: ItemConfiguration = ItemConfiguration(),
     sheetColors: PickerSheetColors = PickerSheetColors(),
-    colors: CheckboxColors = CheckboxDefaults.colors(),
+    checkboxColors: CheckboxColors = CheckboxDefaults.colors(),
     onDismiss: ((List<String>) -> Unit)? = null
 ) {
 
-    var selectedItemsTemp = remember { mutableStateListOf("") }
-    selectedItems?.let { selectedItemsTemp.addAll(it) }
+    val selectedItemsTemp = remember { mutableStateListOf("") }
+    selectedItemsTemp.clear()
+    selectedItems?.let {
+        selectedItemsTemp.addAll(it)
+    }
 
     if (showState) {
         ModalBottomSheet(
@@ -55,23 +59,27 @@ fun CheckBoxPickerSheet(
             dragHandle = {
                 if (isDragIconEnabled) BottomSheetDefaults.DragHandle()
             },
-            onDismissRequest = { onDismiss?.invoke(selectedItemsTemp) }
+            onDismissRequest = { onDismiss?.invoke(selectedItemsTemp.toList()) }
         ) {
             Column(
                 modifier = modifier
                     .navigationBarsPadding()
                     .fillMaxWidth()
             ) {
-                title?.let {
-                    Text(
-                        modifier = Modifier,
-                        text = title,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = titleConfiguration.size,
-                        fontFamily = fontFamily,
-                        color = titleConfiguration.color,
-                        textAlign = titleConfiguration.align
-                    )
+                Box(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    title?.let {
+                        Text(
+                            modifier = Modifier.align(Alignment.CenterStart),
+                            text = title,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = titleConfiguration.size,
+                            fontFamily = fontFamily,
+                            color = titleConfiguration.color,
+                            textAlign = titleConfiguration.align
+                        )
+                    }
                 }
                 LazyColumn {
                     itemsIndexed(list) { index, item ->
@@ -83,11 +91,11 @@ fun CheckBoxPickerSheet(
                         ) {
                             Checkbox(
                                 checked = selectedItemsTemp.contains(item),
-                                onCheckedChange = {
-                                    if (it) selectedItemsTemp.add(item)
+                                onCheckedChange = { isChecked ->
+                                    if (isChecked) selectedItemsTemp.add(item)
                                     else selectedItemsTemp.remove(item)
                                 },
-                                colors = colors
+                                colors = checkboxColors
                             )
                             Text(
                                 modifier = Modifier

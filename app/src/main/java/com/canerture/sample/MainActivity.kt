@@ -18,7 +18,6 @@ import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -26,7 +25,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.canerture.pickersheet.CheckBoxPickerSheet
 import com.canerture.pickersheet.DividerConfiguration
@@ -102,9 +100,6 @@ class MainActivity : ComponentActivity() {
                         itemConfiguration = ItemConfiguration(),
                         sheetColors = PickerSheetColors(),
                         selectedIconConfiguration = SelectedIconConfiguration(),
-                        onItemClick = {
-                            //textPickerShowState = false
-                        },
                         onDismiss = {
                             textPickerShowState = false
                         }
@@ -121,16 +116,17 @@ class MainActivity : ComponentActivity() {
                             "Fourth"
                         ),
                         title = "Title",
-                        selectedItems = listOf("Second", "Third"),
+                        selectedItems = listOf(),
                         isDragIconEnabled = true,
                         fontFamily = FontFamily.Default,
                         dividerConfiguration = DividerConfiguration(),
                         titleConfiguration = TitleConfiguration(),
                         itemConfiguration = ItemConfiguration(),
                         sheetColors = PickerSheetColors(),
-                        colors = CheckboxDefaults.colors(),
+                        checkboxColors = CheckboxDefaults.colors(),
                         onDismiss = {
                             checkBoxPickerShowState = false
+                            println(it)
                         }
                     )
 
@@ -152,10 +148,7 @@ class MainActivity : ComponentActivity() {
                         titleConfiguration = TitleConfiguration(),
                         itemConfiguration = ItemConfiguration(),
                         sheetColors = PickerSheetColors(),
-                        colors = RadioButtonDefaults.colors(),
-                        onItemClick = {
-                            //radioButtonPickerShowState = false
-                        },
+                        radioButtonColors = RadioButtonDefaults.colors(),
                         onDismiss = {
                             radioButtonPickerShowState = false
                         }
@@ -163,130 +156,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
-@Composable
-fun Preview() {
-
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
-    ) {
-        val sheetState = rememberModalBottomSheetState()
-
-        var textPickerShowState by rememberSaveable { mutableStateOf(false) }
-        var checkBoxPickerShowState by rememberSaveable { mutableStateOf(false) }
-        var radioButtonPickerShowState by rememberSaveable { mutableStateOf(false) }
-
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
-                onClick = { textPickerShowState = true }
-            ) {
-                Text(text = "Show Text Picker Sheet")
-            }
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
-                onClick = { checkBoxPickerShowState = true }
-            ) {
-                Text(text = "Show CheckBox Picker Sheet")
-            }
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
-                onClick = { radioButtonPickerShowState = true }
-            ) {
-                Text(text = "Show RadioButton Picker Sheet")
-            }
-        }
-
-        TextPickerSheet(
-            modifier = Modifier.padding(16.dp),
-            sheetState = sheetState,
-            showState = textPickerShowState,
-            list = listOf(
-                "First",
-                "Second",
-                "Third",
-                "Fourth"
-            ),
-            title = "Title",
-            selectedItem = "Second",
-            isDragIconEnabled = true,
-            fontFamily = FontFamily.Default,
-            dividerConfiguration = DividerConfiguration(),
-            titleConfiguration = TitleConfiguration(),
-            itemConfiguration = ItemConfiguration(),
-            sheetColors = PickerSheetColors(),
-            selectedIconConfiguration = SelectedIconConfiguration(),
-            onItemClick = {
-                //textPickerShowState = false
-            },
-            onDismiss = {
-                textPickerShowState = false
-            }
-        )
-
-        CheckBoxPickerSheet(
-            modifier = Modifier.padding(16.dp),
-            sheetState = sheetState,
-            showState = checkBoxPickerShowState,
-            list = listOf(
-                "First",
-                "Second",
-                "Third",
-                "Fourth"
-            ),
-            title = "Title",
-            selectedItems = listOf("Second", "Third"),
-            isDragIconEnabled = true,
-            fontFamily = FontFamily.Default,
-            dividerConfiguration = DividerConfiguration(),
-            titleConfiguration = TitleConfiguration(),
-            itemConfiguration = ItemConfiguration(),
-            sheetColors = PickerSheetColors(),
-            colors = CheckboxDefaults.colors(),
-            onDismiss = {
-                checkBoxPickerShowState = false
-            }
-        )
-
-        RadioButtonPickerSheet(
-            modifier = Modifier.padding(16.dp),
-            sheetState = sheetState,
-            showState = radioButtonPickerShowState,
-            list = listOf(
-                "First",
-                "Second",
-                "Third",
-                "Fourth"
-            ),
-            title = "Title",
-            selectedItem = "Second",
-            isDragIconEnabled = true,
-            fontFamily = FontFamily.Default,
-            dividerConfiguration = DividerConfiguration(),
-            titleConfiguration = TitleConfiguration(),
-            itemConfiguration = ItemConfiguration(),
-            sheetColors = PickerSheetColors(),
-            colors = RadioButtonDefaults.colors(),
-            onItemClick = {
-                //radioButtonPickerShowState = false
-            },
-            onDismiss = {
-                radioButtonPickerShowState = false
-            }
-        )
     }
 }

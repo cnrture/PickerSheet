@@ -42,12 +42,11 @@ fun RadioButtonPickerSheet(
     titleConfiguration: TitleConfiguration = TitleConfiguration(),
     itemConfiguration: ItemConfiguration = ItemConfiguration(),
     sheetColors: PickerSheetColors = PickerSheetColors(),
-    colors: RadioButtonColors = RadioButtonDefaults.colors(),
-    onItemClick: ((String) -> Unit)? = null,
+    radioButtonColors: RadioButtonColors = RadioButtonDefaults.colors(),
     onDismiss: ((String) -> Unit)? = null
 ) {
 
-    var selectedItem by remember { mutableStateOf(selectedItem.orEmpty()) }
+    var selectedItemTemp by remember { mutableStateOf(selectedItem.orEmpty()) }
 
     if (showState) {
         ModalBottomSheet(
@@ -57,7 +56,7 @@ fun RadioButtonPickerSheet(
             dragHandle = {
                 if (isDragIconEnabled) BottomSheetDefaults.DragHandle()
             },
-            onDismissRequest = { onDismiss?.invoke(selectedItem) }
+            onDismissRequest = { onDismiss?.invoke(selectedItemTemp) }
         ) {
             Column(
                 modifier = modifier
@@ -84,12 +83,11 @@ fun RadioButtonPickerSheet(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             RadioButton(
-                                selected = item == selectedItem,
+                                selected = selectedItemTemp == item,
                                 onClick = {
-                                    selectedItem = item
-                                    onItemClick?.invoke(item)
+                                    selectedItemTemp = item
                                 },
-                                colors = colors
+                                colors = radioButtonColors
                             )
                             Text(
                                 modifier = Modifier
