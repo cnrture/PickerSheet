@@ -126,7 +126,6 @@ class MainActivity : ComponentActivity() {
                         checkboxColors = CheckboxDefaults.colors(),
                         onDismiss = {
                             checkBoxPickerShowState = false
-                            println(it)
                         }
                     )
 
