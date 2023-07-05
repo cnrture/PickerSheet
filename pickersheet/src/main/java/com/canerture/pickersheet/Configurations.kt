@@ -32,5 +32,6 @@ data class SelectedIconConfiguration(
 
 data class DividerConfiguration(
     val isEnabled: Boolean = false,
-    val color: Color = Color.Black
+    val color: Color = Color.Black,
+    val thickness: Dp = 1.dp
 )

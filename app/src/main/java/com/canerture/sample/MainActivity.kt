@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.canerture.pickersheet.CheckBoxPickerSheet
 import com.canerture.pickersheet.DividerConfiguration
@@ -95,7 +96,7 @@ class MainActivity : ComponentActivity() {
                         selectedItem = "Second",
                         isDragIconEnabled = true,
                         fontFamily = FontFamily.Default,
-                        dividerConfiguration = DividerConfiguration(),
+                        dividerConfiguration = DividerConfiguration(isEnabled = true),
                         titleConfiguration = TitleConfiguration(),
                         itemConfiguration = ItemConfiguration(),
                         sheetColors = PickerSheetColors(),
@@ -125,6 +126,7 @@ class MainActivity : ComponentActivity() {
                         sheetColors = PickerSheetColors(),
                         checkboxColors = CheckboxDefaults.colors(),
                         onDismiss = {
+                            println(it)
                             checkBoxPickerShowState = false
                         }
                     )

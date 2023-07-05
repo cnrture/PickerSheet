@@ -1,19 +1,13 @@
 package com.canerture.pickersheet
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.BottomSheetDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,68 +43,66 @@ fun TextPickerSheet(
     var selectedItemTemp by remember { mutableStateOf(selectedItem.orEmpty()) }
 
     if (showState) {
-        ModalBottomSheet(
+        PickerSheet(
+            modifier = modifier,
             sheetState = sheetState,
-            scrimColor = sheetColors.scrimColor,
-            containerColor = sheetColors.backgroundColor,
-            dragHandle = {
-                if (isDragIconEnabled) BottomSheetDefaults.DragHandle()
-            },
-            onDismissRequest = { onDismiss?.invoke(selectedItemTemp) }
-        ) {
-            Column(
-                modifier = modifier
-                    .navigationBarsPadding()
-                    .fillMaxWidth()
-            ) {
-                title?.let {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = if (isDragIconEnabled) 0.dp else 12.dp),
-                        text = title,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = titleConfiguration.size,
-                        fontFamily = fontFamily,
-                        color = titleConfiguration.color,
-                        textAlign = titleConfiguration.align
-                    )
-                }
-                LazyColumn {
-                    itemsIndexed(list) { index, item ->
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = if (title != null && index == 0) itemConfiguration.padding else 0.dp)
-                                .clickable {
-                                    selectedItemTemp = item
-                                },
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                modifier = Modifier
-                                    .padding(vertical = itemConfiguration.padding)
-                                    .weight(1f),
-                                text = item,
-                                fontSize = itemConfiguration.size,
-                                fontFamily = fontFamily,
-                                color = itemConfiguration.color
-                            )
-                            if (selectedItemTemp == item) Icon(
-                                modifier = Modifier
-                                    .padding(end = 8.dp)
-                                    .size(selectedIconConfiguration.size),
-                                painter = painterResource(id = selectedIconConfiguration.icon),
-                                tint = selectedIconConfiguration.color,
-                                contentDescription = null
-                            )
-                        }
-                        if (dividerConfiguration.isEnabled && index != list.size - 1) {
-                            Divider(color = dividerConfiguration.color)
-                        }
-                    }
-                }
-            }
+            list = list,
+            title = title,
+            fontFamily = fontFamily,
+            titleConfiguration = titleConfiguration,
+            dividerConfiguration = dividerConfiguration,
+            sheetColors = sheetColors,
+            isDragIconEnabled = isDragIconEnabled,
+            onDismiss = { onDismiss?.invoke(selectedItemTemp) }
+        ) { _, item ->
+            TextItem(
+                modifier = Modifier.fillMaxWidth(),
+                item = item,
+                selectedItemTemp = selectedItemTemp,
+                itemConfiguration = itemConfiguration,
+                selectedIconConfiguration = selectedIconConfiguration,
+                fontFamily = fontFamily,
+                onItemClick = { selectedItemTemp = it }
+            )
         }
+    }
+}
+
+@Composable
+private fun TextItem(
+    modifier: Modifier = Modifier,
+    item: String,
+    selectedItemTemp: String,
+    itemConfiguration: ItemConfiguration = ItemConfiguration(),
+    selectedIconConfiguration: SelectedIconConfiguration = SelectedIconConfiguration(),
+    fontFamily: FontFamily = FontFamily.Default,
+    onItemClick: (String) -> Unit
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = Modifier
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = { onItemClick(item) }
+                )
+                .padding(vertical = itemConfiguration.padding)
+                .weight(1f),
+            text = item,
+            fontSize = itemConfiguration.size,
+            fontFamily = fontFamily,
+            color = itemConfiguration.color
+        )
+        if (selectedItemTemp == item) Icon(
+            modifier = Modifier
+                .padding(end = 8.dp)
+                .size(selectedIconConfiguration.size),
+            painter = painterResource(id = selectedIconConfiguration.icon),
+            tint = selectedIconConfiguration.color,
+            contentDescription = null
+        )
     }
 }
