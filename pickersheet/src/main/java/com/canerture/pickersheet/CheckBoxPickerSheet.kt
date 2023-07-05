@@ -1,5 +1,6 @@
 package com.canerture.pickersheet
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -27,6 +28,7 @@ fun CheckBoxPickerSheet(
     title: String? = null,
     selectedItems: List<String>? = null,
     isDragIconEnabled: Boolean = true,
+    rippleEffectEnabled: Boolean = true,
     fontFamily: FontFamily = FontFamily.Default,
     dividerConfiguration: DividerConfiguration = DividerConfiguration(),
     titleConfiguration: TitleConfiguration = TitleConfiguration(),
@@ -60,6 +62,7 @@ fun CheckBoxPickerSheet(
                         .padding(top = if (title != null && index == 0) itemConfiguration.padding else 0.dp),
                     item = item,
                     isChecked = selectedItemsTemp.contains(item),
+                    rippleEffectEnabled = rippleEffectEnabled,
                     itemConfiguration = itemConfiguration,
                     checkboxColors = checkboxColors,
                     fontFamily = fontFamily,
@@ -78,6 +81,7 @@ private fun CheckBoxItem(
     modifier: Modifier = Modifier,
     item: String,
     isChecked: Boolean,
+    rippleEffectEnabled: Boolean,
     itemConfiguration: ItemConfiguration = ItemConfiguration(),
     checkboxColors: CheckboxColors = CheckboxDefaults.colors(),
     fontFamily: FontFamily = FontFamily.Default,
@@ -90,7 +94,11 @@ private fun CheckBoxItem(
         Checkbox(
             checked = isChecked,
             onCheckedChange = { onCheckedChange(it) },
-            colors = checkboxColors
+            colors = checkboxColors,
+            interactionSource = remember {
+                if (rippleEffectEnabled) MutableInteractionSource()
+                else NoRippleInteractionSource()
+            }
         )
         Text(
             modifier = Modifier

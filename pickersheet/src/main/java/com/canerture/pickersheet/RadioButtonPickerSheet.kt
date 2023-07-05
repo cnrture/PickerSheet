@@ -1,5 +1,6 @@
 package com.canerture.pickersheet
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,6 +30,7 @@ fun RadioButtonPickerSheet(
     title: String? = null,
     selectedItem: String? = null,
     isDragIconEnabled: Boolean = true,
+    rippleEffectEnabled: Boolean = true,
     fontFamily: FontFamily = FontFamily.Default,
     dividerConfiguration: DividerConfiguration = DividerConfiguration(),
     titleConfiguration: TitleConfiguration = TitleConfiguration(),
@@ -59,6 +61,7 @@ fun RadioButtonPickerSheet(
                         .padding(top = if (title != null && index == 0) itemConfiguration.padding else 0.dp),
                     item = item,
                     isSelected = selectedItemTemp == item,
+                    rippleEffectEnabled = rippleEffectEnabled,
                     itemConfiguration = itemConfiguration,
                     fontFamily = fontFamily,
                     radioButtonColors = radioButtonColors,
@@ -74,6 +77,7 @@ private fun RadioButtonItem(
     modifier: Modifier = Modifier,
     item: String,
     isSelected: Boolean,
+    rippleEffectEnabled: Boolean,
     itemConfiguration: ItemConfiguration = ItemConfiguration(),
     fontFamily: FontFamily = FontFamily.Default,
     radioButtonColors: RadioButtonColors = RadioButtonDefaults.colors(),
@@ -86,7 +90,11 @@ private fun RadioButtonItem(
         RadioButton(
             selected = isSelected,
             onClick = { onItemClick(item) },
-            colors = radioButtonColors
+            colors = radioButtonColors,
+            interactionSource = remember {
+                if (rippleEffectEnabled) NoRippleInteractionSource()
+                else MutableInteractionSource()
+            }
         )
         Text(
             modifier = Modifier

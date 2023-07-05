@@ -2,9 +2,7 @@ package com.canerture.pickersheet
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -52,18 +50,12 @@ internal fun PickerSheet(
         ) {
             PickerSheetTitle(title, isDragIconEnabled, titleConfiguration, fontFamily)
             title?.let {
-                Spacer(modifier = Modifier.height(16.dp))
+                //Spacer(modifier = Modifier.height(16.dp))
             }
             LazyColumn {
                 itemsIndexed(list) { index, item ->
-                    if (dividerConfiguration.isEnabled) {
-                        Divider(
-                            color = dividerConfiguration.color,
-                            thickness = dividerConfiguration.thickness
-                        )
-                    }
                     content(this@Column, index, item)
-                    if (dividerConfiguration.isEnabled && index == list.lastIndex) {
+                    if (dividerConfiguration.isEnabled && index != list.lastIndex) {
                         Divider(
                             color = dividerConfiguration.color,
                             thickness = dividerConfiguration.thickness

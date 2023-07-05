@@ -1,5 +1,6 @@
 package com.canerture.pickersheet
 
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
@@ -31,6 +32,7 @@ fun TextPickerSheet(
     title: String? = null,
     selectedItem: String? = null,
     isDragIconEnabled: Boolean = true,
+    rippleEffectEnabled: Boolean = true,
     fontFamily: FontFamily = FontFamily.Default,
     dividerConfiguration: DividerConfiguration = DividerConfiguration(),
     titleConfiguration: TitleConfiguration = TitleConfiguration(),
@@ -59,6 +61,7 @@ fun TextPickerSheet(
                     modifier = Modifier.fillMaxWidth(),
                     item = item,
                     selectedItemTemp = selectedItemTemp,
+                    rippleEffectEnabled = rippleEffectEnabled,
                     itemConfiguration = itemConfiguration,
                     selectedIconConfiguration = selectedIconConfiguration,
                     fontFamily = fontFamily,
@@ -74,22 +77,26 @@ private fun TextItem(
     modifier: Modifier = Modifier,
     item: String,
     selectedItemTemp: String,
+    rippleEffectEnabled: Boolean,
     itemConfiguration: ItemConfiguration = ItemConfiguration(),
     selectedIconConfiguration: SelectedIconConfiguration = SelectedIconConfiguration(),
     fontFamily: FontFamily = FontFamily.Default,
     onItemClick: (String) -> Unit
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier
+            .clickable(
+                interactionSource = remember {
+                    if (rippleEffectEnabled) MutableInteractionSource()
+                    else NoRippleInteractionSource()
+                },
+                indication = if (rippleEffectEnabled) LocalIndication.current else null,
+                onClick = { onItemClick(item) }
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             modifier = Modifier
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                    onClick = { onItemClick(item) }
-                )
                 .padding(vertical = itemConfiguration.padding)
                 .weight(1f),
             text = item,
