@@ -51,20 +51,21 @@ fun RadioButtonPickerSheet(
             dividerConfiguration = dividerConfiguration,
             sheetColors = sheetColors,
             isDragIconEnabled = isDragIconEnabled,
-            onDismiss = { onDismiss?.invoke(selectedItemTemp) }
-        ) { index, item ->
-            RadioButtonItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = if (title != null && index == 0) itemConfiguration.padding else 0.dp),
-                item = item,
-                isSelected = selectedItemTemp == item,
-                itemConfiguration = itemConfiguration,
-                fontFamily = fontFamily,
-                radioButtonColors = radioButtonColors,
-                onItemClick = { selectedItemTemp = it }
-            )
-        }
+            onDismiss = { onDismiss?.invoke(selectedItemTemp) },
+            content = { index, item ->
+                RadioButtonItem(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = if (title != null && index == 0) itemConfiguration.padding else 0.dp),
+                    item = item,
+                    isSelected = selectedItemTemp == item,
+                    itemConfiguration = itemConfiguration,
+                    fontFamily = fontFamily,
+                    radioButtonColors = radioButtonColors,
+                    onItemClick = { selectedItemTemp = it }
+                )
+            }
+        )
     }
 }
 

@@ -52,23 +52,24 @@ fun CheckBoxPickerSheet(
             dividerConfiguration = dividerConfiguration,
             sheetColors = sheetColors,
             isDragIconEnabled = isDragIconEnabled,
-            onDismiss = { onDismiss?.invoke(selectedItemsTemp.toList()) }
-        ) { index, item ->
-            CheckBoxItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = if (title != null && index == 0) itemConfiguration.padding else 0.dp),
-                item = item,
-                isChecked = selectedItemsTemp.contains(item),
-                itemConfiguration = itemConfiguration,
-                checkboxColors = checkboxColors,
-                fontFamily = fontFamily,
-                onCheckedChange = { isChecked ->
-                    if (isChecked) selectedItemsTemp.add(item)
-                    else selectedItemsTemp.remove(item)
-                }
-            )
-        }
+            onDismiss = { onDismiss?.invoke(selectedItemsTemp.toList()) },
+            content = { index, item ->
+                CheckBoxItem(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = if (title != null && index == 0) itemConfiguration.padding else 0.dp),
+                    item = item,
+                    isChecked = selectedItemsTemp.contains(item),
+                    itemConfiguration = itemConfiguration,
+                    checkboxColors = checkboxColors,
+                    fontFamily = fontFamily,
+                    onCheckedChange = { isChecked ->
+                        if (isChecked) selectedItemsTemp.add(item)
+                        else selectedItemsTemp.remove(item)
+                    }
+                )
+            }
+        )
     }
 }
 

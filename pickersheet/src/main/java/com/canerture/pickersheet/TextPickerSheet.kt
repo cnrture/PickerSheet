@@ -53,18 +53,19 @@ fun TextPickerSheet(
             dividerConfiguration = dividerConfiguration,
             sheetColors = sheetColors,
             isDragIconEnabled = isDragIconEnabled,
-            onDismiss = { onDismiss?.invoke(selectedItemTemp) }
-        ) { _, item ->
-            TextItem(
-                modifier = Modifier.fillMaxWidth(),
-                item = item,
-                selectedItemTemp = selectedItemTemp,
-                itemConfiguration = itemConfiguration,
-                selectedIconConfiguration = selectedIconConfiguration,
-                fontFamily = fontFamily,
-                onItemClick = { selectedItemTemp = it }
-            )
-        }
+            onDismiss = { onDismiss?.invoke(selectedItemTemp) },
+            content = { _, item ->
+                TextItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    item = item,
+                    selectedItemTemp = selectedItemTemp,
+                    itemConfiguration = itemConfiguration,
+                    selectedIconConfiguration = selectedIconConfiguration,
+                    fontFamily = fontFamily,
+                    onItemClick = { selectedItemTemp = it }
+                )
+            }
+        )
     }
 }
 
