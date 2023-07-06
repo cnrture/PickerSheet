@@ -92,8 +92,8 @@ private fun RadioButtonItem(
             onClick = { onItemClick(item) },
             colors = radioButtonColors,
             interactionSource = remember {
-                if (rippleEffectEnabled) NoRippleInteractionSource()
-                else MutableInteractionSource()
+                if (rippleEffectEnabled) MutableInteractionSource()
+                else NoRippleInteractionSource()
             }
         )
         Text(
