@@ -34,7 +34,7 @@ internal fun PickerSheet(
     sheetColors: PickerSheetColors = PickerSheetColors(),
     isDragIconEnabled: Boolean,
     onDismiss: () -> Unit,
-    content: @Composable ColumnScope.(Int, String) -> Unit,
+    content: @Composable ColumnScope.(String) -> Unit,
 ) {
     ModalBottomSheet(
         sheetState = sheetState,
@@ -56,7 +56,7 @@ internal fun PickerSheet(
             }
             LazyColumn {
                 itemsIndexed(list) { index, item ->
-                    content(this@Column, index, item)
+                    content(this@Column, item)
                     if (dividerConfiguration.isEnabled && index != list.lastIndex) {
                         Divider(
                             color = dividerConfiguration.color,

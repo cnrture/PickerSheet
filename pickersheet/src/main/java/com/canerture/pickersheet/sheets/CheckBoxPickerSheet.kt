@@ -1,46 +1,52 @@
-package com.canerture.pickersheet
+package com.canerture.pickersheet.sheets
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxColors
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonColors
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.unit.dp
+import com.canerture.pickersheet.DividerConfiguration
+import com.canerture.pickersheet.ItemConfiguration
+import com.canerture.pickersheet.NoRippleInteractionSource
+import com.canerture.pickersheet.PickerSheet
+import com.canerture.pickersheet.PickerSheetColors
+import com.canerture.pickersheet.TitleConfiguration
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RadioButtonPickerSheet(
+fun CheckBoxPickerSheet(
     modifier: Modifier = Modifier,
     sheetState: SheetState,
     showState: Boolean = false,
     list: List<String>,
     title: String? = null,
-    selectedItem: String? = null,
+    selectedItems: List<String>? = null,
     isDragIconEnabled: Boolean = true,
-    rippleEffectEnabled: Boolean = true,
+    rippleEffectEnabled: Boolean = false,
     fontFamily: FontFamily = FontFamily.Default,
     dividerConfiguration: DividerConfiguration = DividerConfiguration(),
     titleConfiguration: TitleConfiguration = TitleConfiguration(),
     itemConfiguration: ItemConfiguration = ItemConfiguration(),
     sheetColors: PickerSheetColors = PickerSheetColors(),
-    radioButtonColors: RadioButtonColors = RadioButtonDefaults.colors(),
-    onDismiss: ((String) -> Unit)? = null
+    checkboxColors: CheckboxColors = CheckboxDefaults.colors(),
+    onDismiss: ((List<String>) -> Unit)? = null
 ) {
 
-    var selectedItemTemp by remember { mutableStateOf(selectedItem.orEmpty()) }
+    val selectedItemsTemp = remember { mutableStateListOf<String>() }
+    selectedItems?.let {
+        selectedItemsTemp.addAll(it)
+    }
 
     if (showState) {
         PickerSheet(
@@ -53,19 +59,20 @@ fun RadioButtonPickerSheet(
             dividerConfiguration = dividerConfiguration,
             sheetColors = sheetColors,
             isDragIconEnabled = isDragIconEnabled,
-            onDismiss = { onDismiss?.invoke(selectedItemTemp) },
-            content = { index, item ->
-                RadioButtonItem(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = if (title != null && index == 0) itemConfiguration.padding else 0.dp),
+            onDismiss = { onDismiss?.invoke(selectedItemsTemp.toList()) },
+            content = { item ->
+                CheckBoxItem(
+                    modifier = Modifier.fillMaxWidth(),
                     item = item,
-                    isSelected = selectedItemTemp == item,
+                    isChecked = selectedItemsTemp.contains(item),
                     rippleEffectEnabled = rippleEffectEnabled,
                     itemConfiguration = itemConfiguration,
+                    checkboxColors = checkboxColors,
                     fontFamily = fontFamily,
-                    radioButtonColors = radioButtonColors,
-                    onItemClick = { selectedItemTemp = it }
+                    onCheckedChange = { isChecked ->
+                        if (isChecked) selectedItemsTemp.add(item)
+                        else selectedItemsTemp.remove(item)
+                    }
                 )
             }
         )
@@ -73,24 +80,24 @@ fun RadioButtonPickerSheet(
 }
 
 @Composable
-private fun RadioButtonItem(
+private fun CheckBoxItem(
     modifier: Modifier = Modifier,
     item: String,
-    isSelected: Boolean,
+    isChecked: Boolean,
     rippleEffectEnabled: Boolean,
     itemConfiguration: ItemConfiguration = ItemConfiguration(),
+    checkboxColors: CheckboxColors = CheckboxDefaults.colors(),
     fontFamily: FontFamily = FontFamily.Default,
-    radioButtonColors: RadioButtonColors = RadioButtonDefaults.colors(),
-    onItemClick: (String) -> Unit
+    onCheckedChange: (Boolean) -> Unit
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        RadioButton(
-            selected = isSelected,
-            onClick = { onItemClick(item) },
-            colors = radioButtonColors,
+        Checkbox(
+            checked = isChecked,
+            onCheckedChange = { onCheckedChange(it) },
+            colors = checkboxColors,
             interactionSource = remember {
                 if (rippleEffectEnabled) MutableInteractionSource()
                 else NoRippleInteractionSource()

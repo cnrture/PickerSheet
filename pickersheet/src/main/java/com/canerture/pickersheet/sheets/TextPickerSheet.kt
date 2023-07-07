@@ -1,4 +1,4 @@
-package com.canerture.pickersheet
+package com.canerture.pickersheet.sheets
 
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
@@ -21,6 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import com.canerture.pickersheet.DividerConfiguration
+import com.canerture.pickersheet.ItemConfiguration
+import com.canerture.pickersheet.NoRippleInteractionSource
+import com.canerture.pickersheet.PickerSheet
+import com.canerture.pickersheet.PickerSheetColors
+import com.canerture.pickersheet.SelectedIconConfiguration
+import com.canerture.pickersheet.TitleConfiguration
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,7 +39,7 @@ fun TextPickerSheet(
     title: String? = null,
     selectedItem: String? = null,
     isDragIconEnabled: Boolean = true,
-    rippleEffectEnabled: Boolean = true,
+    rippleEffectEnabled: Boolean = false,
     fontFamily: FontFamily = FontFamily.Default,
     dividerConfiguration: DividerConfiguration = DividerConfiguration(),
     titleConfiguration: TitleConfiguration = TitleConfiguration(),
@@ -56,7 +63,7 @@ fun TextPickerSheet(
             sheetColors = sheetColors,
             isDragIconEnabled = isDragIconEnabled,
             onDismiss = { onDismiss?.invoke(selectedItemTemp) },
-            content = { _, item ->
+            content = { item ->
                 TextItem(
                     modifier = Modifier.fillMaxWidth(),
                     item = item,

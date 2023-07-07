@@ -26,13 +26,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
-import com.canerture.pickersheet.CheckBoxPickerSheet
+import com.canerture.pickersheet.sheets.CheckBoxPickerSheet
 import com.canerture.pickersheet.DividerConfiguration
 import com.canerture.pickersheet.ItemConfiguration
 import com.canerture.pickersheet.PickerSheetColors
-import com.canerture.pickersheet.RadioButtonPickerSheet
+import com.canerture.pickersheet.sheets.RadioButtonPickerSheet
 import com.canerture.pickersheet.SelectedIconConfiguration
-import com.canerture.pickersheet.TextPickerSheet
+import com.canerture.pickersheet.sheets.TextPickerSheet
 import com.canerture.pickersheet.TitleConfiguration
 import com.canerture.sample.ui.theme.SampleTheme
 
@@ -94,7 +94,7 @@ class MainActivity : ComponentActivity() {
                         title = "Title",
                         selectedItem = "Second",
                         isDragIconEnabled = true,
-                        rippleEffectEnabled = true,
+                        rippleEffectEnabled = false,
                         fontFamily = FontFamily.Default,
                         dividerConfiguration = DividerConfiguration(isEnabled = true),
                         titleConfiguration = TitleConfiguration(),
@@ -119,7 +119,7 @@ class MainActivity : ComponentActivity() {
                         title = "Title",
                         selectedItems = listOf(),
                         isDragIconEnabled = true,
-                        rippleEffectEnabled = true,
+                        rippleEffectEnabled = false,
                         fontFamily = FontFamily.Default,
                         dividerConfiguration = DividerConfiguration(),
                         titleConfiguration = TitleConfiguration(),
@@ -144,7 +144,7 @@ class MainActivity : ComponentActivity() {
                         title = "Title",
                         selectedItem = "Second",
                         isDragIconEnabled = true,
-                        rippleEffectEnabled = true,
+                        rippleEffectEnabled = false,
                         fontFamily = FontFamily.Default,
                         dividerConfiguration = DividerConfiguration(),
                         titleConfiguration = TitleConfiguration(),
