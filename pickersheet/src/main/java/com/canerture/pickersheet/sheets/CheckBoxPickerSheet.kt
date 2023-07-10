@@ -11,7 +11,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +21,7 @@ import com.canerture.pickersheet.NoRippleInteractionSource
 import com.canerture.pickersheet.PickerSheet
 import com.canerture.pickersheet.PickerSheetColors
 import com.canerture.pickersheet.TitleConfiguration
+import com.canerture.pickersheet.rememberMutableStateListOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,7 +43,7 @@ fun CheckBoxPickerSheet(
     onDismiss: ((List<String>) -> Unit)? = null
 ) {
 
-    val selectedItemsTemp = remember { mutableStateListOf<String>() }
+    val selectedItemsTemp = rememberMutableStateListOf<String>()
     selectedItems?.let {
         selectedItemsTemp.addAll(it)
     }
