@@ -123,7 +123,7 @@ class MainActivity : ComponentActivity() {
                             color = Color.Black,
                             size = 16.dp
                         ),
-                        onDismiss = { it: String ->
+                        onDismiss = {
                             textPickerShowState = false
                         }
                     )
@@ -163,7 +163,7 @@ class MainActivity : ComponentActivity() {
                             backgroundColor = Color.White
                         ),
                         checkboxColors = CheckboxDefaults.colors(),
-                        onDismiss = { it: List<String> ->
+                        onDismiss = {
                             checkBoxPickerShowState = false
                         }
                     )
@@ -203,7 +203,7 @@ class MainActivity : ComponentActivity() {
                             backgroundColor = Color.White
                         ),
                         radioButtonColors = RadioButtonDefaults.colors(),
-                        onDismiss = { it: String ->
+                        onDismiss = {
                             radioButtonPickerShowState = false
                         }
                     )
