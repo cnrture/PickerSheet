@@ -13,8 +13,14 @@ dependencies {
 }
 ```
 
+| Text | CheckBox | RadioButton |
+| ------- | -------------------- | -------------------- |
+|<img src="https://github.com/cnrture/PickerSheet/assets/29903779/36bd1dd3-22e1-4b5f-bae3-e447c1328c22" width="280" height="600"/>|<img src="https://github.com/cnrture/PickerSheet/assets/29903779/603e43a3-4f87-4f71-a070-c762b7113dd5" width="280" height="600"/>|<img src="https://github.com/cnrture/PickerSheet/assets/29903779/996e7b76-e1d4-4843-a09d-965f644ffef5" width="280" height="600"/>|
+
 ## Usage
+
 ### TextPickerSheet
+
 ```kotlin
 Surface(
     modifier = Modifier.fillMaxSize(),
