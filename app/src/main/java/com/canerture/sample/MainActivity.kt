@@ -24,8 +24,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.canerture.pickersheet.DividerConfiguration
 import com.canerture.pickersheet.ItemConfiguration
 import com.canerture.pickersheet.PickerSheetColors
@@ -35,6 +38,7 @@ import com.canerture.pickersheet.sheets.CheckBoxPickerSheet
 import com.canerture.pickersheet.sheets.RadioButtonPickerSheet
 import com.canerture.pickersheet.sheets.TextPickerSheet
 import com.canerture.sample.ui.theme.SampleTheme
+import kotlinx.collections.immutable.toImmutableList
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,12 +100,31 @@ class MainActivity : ComponentActivity() {
                         isDragIconEnabled = true,
                         rippleEffectEnabled = false,
                         fontFamily = FontFamily.Default,
-                        dividerConfiguration = DividerConfiguration(),
-                        titleConfiguration = TitleConfiguration(),
-                        itemConfiguration = ItemConfiguration(),
-                        sheetColors = PickerSheetColors(),
-                        selectedIconConfiguration = SelectedIconConfiguration(),
-                        onDismiss = {
+                        dividerConfiguration = DividerConfiguration(
+                            isEnabled = false,
+                            color = Color.Black,
+                            thickness = 1.dp
+                        ),
+                        titleConfiguration = TitleConfiguration(
+                            color = Color.Black,
+                            size = 16.sp,
+                            align = TextAlign.Start
+                        ),
+                        itemConfiguration = ItemConfiguration(
+                            color = Color.Black,
+                            size = 14.sp,
+                            padding = 16.dp
+                        ),
+                        sheetColors = PickerSheetColors(
+                            scrimColor = Color.Gray.copy(alpha = 0.6f),
+                            backgroundColor = Color.White
+                        ),
+                        selectedIconConfiguration = SelectedIconConfiguration(
+                            icon = com.canerture.pickersheet.R.drawable.ic_check,
+                            color = Color.Black,
+                            size = 16.dp
+                        ),
+                        onDismiss = { it: String ->
                             textPickerShowState = false
                         }
                     )
@@ -121,12 +144,27 @@ class MainActivity : ComponentActivity() {
                         isDragIconEnabled = true,
                         rippleEffectEnabled = false,
                         fontFamily = FontFamily.Default,
-                        dividerConfiguration = DividerConfiguration(),
-                        titleConfiguration = TitleConfiguration(),
-                        itemConfiguration = ItemConfiguration(),
-                        sheetColors = PickerSheetColors(),
+                        dividerConfiguration = DividerConfiguration(
+                            isEnabled = false,
+                            color = Color.Black,
+                            thickness = 1.dp
+                        ),
+                        titleConfiguration = TitleConfiguration(
+                            color = Color.Black,
+                            size = 16.sp,
+                            align = TextAlign.Start
+                        ),
+                        itemConfiguration = ItemConfiguration(
+                            color = Color.Black,
+                            size = 14.sp,
+                            padding = 16.dp
+                        ),
+                        sheetColors = PickerSheetColors(
+                            scrimColor = Color.Gray.copy(alpha = 0.6f),
+                            backgroundColor = Color.White
+                        ),
                         checkboxColors = CheckboxDefaults.colors(),
-                        onDismiss = {
+                        onDismiss = { it: List<String> ->
                             checkBoxPickerShowState = false
                         }
                     )
@@ -146,12 +184,27 @@ class MainActivity : ComponentActivity() {
                         isDragIconEnabled = true,
                         rippleEffectEnabled = false,
                         fontFamily = FontFamily.Default,
-                        dividerConfiguration = DividerConfiguration(),
-                        titleConfiguration = TitleConfiguration(),
-                        itemConfiguration = ItemConfiguration(),
-                        sheetColors = PickerSheetColors(),
+                        dividerConfiguration = DividerConfiguration(
+                            isEnabled = false,
+                            color = Color.Black,
+                            thickness = 1.dp
+                        ),
+                        titleConfiguration = TitleConfiguration(
+                            color = Color.Black,
+                            size = 16.sp,
+                            align = TextAlign.Start
+                        ),
+                        itemConfiguration = ItemConfiguration(
+                            color = Color.Black,
+                            size = 14.sp,
+                            padding = 16.dp
+                        ),
+                        sheetColors = PickerSheetColors(
+                            scrimColor = Color.Gray.copy(alpha = 0.6f),
+                            backgroundColor = Color.White
+                        ),
                         radioButtonColors = RadioButtonDefaults.colors(),
-                        onDismiss = {
+                        onDismiss = { it: String ->
                             radioButtonPickerShowState = false
                         }
                     )
