@@ -38,7 +38,6 @@ import com.canerture.pickersheet.sheets.CheckBoxPickerSheet
 import com.canerture.pickersheet.sheets.RadioButtonPickerSheet
 import com.canerture.pickersheet.sheets.TextPickerSheet
 import com.canerture.sample.ui.theme.SampleTheme
-import kotlinx.collections.immutable.toImmutableList
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
